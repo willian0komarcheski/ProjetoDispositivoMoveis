@@ -9,6 +9,7 @@ data class Slip(
 )
 
 data class FactResponse(
+    val id: String,
     val text: String
 )
 

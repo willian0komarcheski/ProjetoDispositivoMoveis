@@ -7,8 +7,8 @@ interface ApiService {
     @GET("advice")
     suspend fun getAdvice(): Response<AdviceResponse>
 
-    @GET("random")
-    suspend fun getUselessFact(): Response<FactResponse>
+        @GET("api/v2/facts/random")
+        suspend fun getUselessFact(): FactResponse
 
     @GET("api/facts?number=1")
     suspend fun getDogFact(): Response<DogFactResponse>
