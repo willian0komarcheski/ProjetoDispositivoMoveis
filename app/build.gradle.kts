@@ -51,6 +51,26 @@ android {
 
 dependencies {
 
+    implementation (libs.androidx.ui.v100)
+    implementation (libs.androidx.navigation.compose.v100)
+    implementation (libs.androidx.activity.compose.v130)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
+    implementation (libs.androidx.navigation.compose.v260) // Verifique a versão mais recente
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.androidx.material.v150) // Verifique a versão mais recente
+    implementation (libs.androidx.ui.v150)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.ui)
+    implementation (libs.androidx.material.v100)
+    implementation (libs.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -62,6 +82,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.androidx.material)
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

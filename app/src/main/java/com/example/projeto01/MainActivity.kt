@@ -1,58 +1,102 @@
 package com.example.projeto01
 
-import AddTaskScreen
-import TaskDetailsScreen
-import TaskListScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.NavController
-import com.example.projeto01.Task
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp()
+            MyApp { // Chama a função MyApp que envolve o Scaffold
+                MainScreen()
+            }
         }
     }
 }
+
+// Função para aplicar o tema Material
 @Composable
-fun MyApp() {
-    val navController = rememberNavController()
-    var tasks by remember { mutableStateOf(mutableListOf<Task>()) }
-
-    Scaffold(
-        topBar = { TopAppBar(title = { Text("Lista de Tarefas") }) }
-    ) { innerPadding ->
-        NavHost(navController, startDestination = "task_list", Modifier.padding(innerPadding)) {
-            composable("task_list") {
-                TaskListScreen(
-                    navController,
-                    tasks,
-                    onDeleteAllTasks = { tasks.clear() } // Limpa a lista de tarefas
-                )
-            }
-            composable("add_task") { AddTaskScreen(navController) { task ->
-                tasks.add(task)
-            }}
-            composable("task_details/{taskId}") { backStackEntry ->
-                val taskId = backStackEntry.arguments?.getString("taskId")?.toIntOrNull()
-                val task = tasks.find { it.id == taskId }
-                if (task != null) {
-                    TaskDetailsScreen(navController, task)
-                }
-            }
+fun MyApp(content: @Composable () -> Unit) {
+    MaterialTheme {
+        Surface {
+            content() // O conteúdo aqui será envolvido pelo tema Material
         }
     }
 }
 
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController)
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = "advice",
+            Modifier.padding(innerPadding) // Adiciona padding para evitar sobreposição com a barra
+        ) {
+            composable("advice") { AdviceScreen() }
+            composable("useless_fact") { UselessFactScreen() }
+            composable("dog_fact") { DogFactScreen() }
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(navController: NavController) {
+    BottomNavigation() {
+        BottomNavigationItem(
+            label = { Text("Advice") },
+            icon = { Icon(Icons.Default.Info, contentDescription = null) },
+            selected = navController.currentDestination?.route == "advice",
+            onClick = { navController.navigate("advice") }
+        )
+        BottomNavigationItem(
+            label = { Text("Useless Fact") },
+            icon = { Icon(Icons.Default.Info, contentDescription = null) },
+            selected = navController.currentDestination?.route == "useless_fact",
+            onClick = { navController.navigate("useless_fact") }
+        )
+        BottomNavigationItem(
+            label = { Text("Dog Fact") },
+            icon = { Icon(Icons.Default.Info, contentDescription = null) },
+            selected = navController.currentDestination?.route == "dog_fact",
+            onClick = { navController.navigate("dog_fact") }
+        )
+    }
+}
+
+@Composable
+fun AdviceScreen() {
+    val viewModel: MainViewModel = viewModel()
+    LaunchedEffect(Unit) { viewModel.fetchAdvice() }
+    Text(text = viewModel.advice.value)
+}
+
+@Composable
+fun UselessFactScreen() {
+    val viewModel: MainViewModel = viewModel()
+    LaunchedEffect(Unit) { viewModel.fetchUselessFact() }
+    Text(text = viewModel.uselessFact.value)
+}
+
+@Composable
+fun DogFactScreen() {
+    val viewModel: MainViewModel = viewModel()
+    LaunchedEffect(Unit) { viewModel.fetchDogFact() }
+    Text(text = viewModel.dogFact.value)
+}
