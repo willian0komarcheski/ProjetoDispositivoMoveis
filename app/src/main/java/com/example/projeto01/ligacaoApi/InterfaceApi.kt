@@ -1,5 +1,8 @@
-package com.example.projeto01
+package com.example.projeto01.ligacaoApi
 
+import com.example.projeto01.dados.AdviceResponse
+import com.example.projeto01.dados.DogFactResponse
+import com.example.projeto01.dados.FactResponse
 import retrofit2.Response
 import retrofit2.http.GET
 

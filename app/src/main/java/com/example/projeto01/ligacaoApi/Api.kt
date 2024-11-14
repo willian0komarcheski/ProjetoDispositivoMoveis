@@ -1,4 +1,4 @@
-package com.example.projeto01
+package com.example.projeto01.ligacaoApi
 
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit

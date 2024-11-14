@@ -33,6 +33,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.projeto01.navegacao.Navegacao
+import com.example.projeto01.view.MainViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +44,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-                Navegacao(viewModel)
+                Navegacao()
             }
         }
     }
@@ -56,126 +58,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    @Composable
-    fun Navegacao(viewModel: MainViewModel) {
-        val navController = rememberNavController()
-        Scaffold(
-            bottomBar = {
-                BottomNavigationBar(navController)
-            }
-        ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = "conselho",
-                Modifier.padding(innerPadding)
-            ) {
-                composable("conselho") { TelaConselho(viewModel) }
-                composable("inutil") { TelaFatos(viewModel) }
-                composable("cachorro") { TelaCachorro(viewModel) }
-            }
-        }
-    }
-
-    @Composable
-    fun BottomNavigationBar(navController: NavController) {
-        BottomNavigation() {
-            BottomNavigationItem(
-                label = { Text("conselho") },
-                icon = { Icon(Icons.Default.Info, contentDescription = null) },
-                selected = navController.currentDestination?.route == "conselho",
-                onClick = { navController.navigate("conselho") }
-            )
-            BottomNavigationItem(
-                label = { Text("fatos inuteis") },
-                icon = { Icon(Icons.Default.Info, contentDescription = null) },
-                selected = navController.currentDestination?.route == "inutil",
-                onClick = { navController.navigate("inutil") }
-            )
-            BottomNavigationItem(
-                label = { Text("curiosidade sobre cachorro") },
-                icon = { Icon(Icons.Default.Info, contentDescription = null) },
-                selected = navController.currentDestination?.route == "cachorro",
-                onClick = { navController.navigate("cachorro") }
-            )
-        }
-    }
-
-    @Composable
-    fun TelaConselho(viewModel: MainViewModel) {
-        var topico by remember { mutableStateOf("Aperte o botão para receber um conselho") }
-        val conselho by viewModel.advice
-        Text(topico)
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { viewModel.fetchAdvice() }) {
-                    Text("Conselho")
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(conselho)
-            }
-        }
-    }
-
-    @Composable
-    fun TelaFatos(viewModel: MainViewModel) {
-        var topico by remember { mutableStateOf("Aperte o botão para receber um fato inutil") }
-        val fatos by viewModel.uselessFact
-        Text(topico)
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { viewModel.fetchUselessFact() }) {
-                    Text("fatos")
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(fatos)
-            }
-
-        }
-    }
-
-
-        @Composable
-        fun TelaCachorro(viewModel: MainViewModel) {
-            var topico by remember { mutableStateOf("Aperte o botão para receber um fato sobre cachorro") }
-            val cachorro by viewModel.dogFact
-            Text(topico)
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { viewModel.fetchDogFact() }) {
-                        Text("cachorro")
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(cachorro)
-                }
-
-            }
-        }
-    }
+}

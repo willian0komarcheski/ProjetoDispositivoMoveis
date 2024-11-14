@@ -1,4 +1,4 @@
-package com.example.projeto01
+package com.example.projeto01.dados
 
 data class AdviceResponse(
     val slip: Slip
@@ -17,5 +17,7 @@ data class DogFactResponse(
     val facts: List<String>
 )
 
-
+data class Usuario(
+    val nome: String, val email: String
+)
 
