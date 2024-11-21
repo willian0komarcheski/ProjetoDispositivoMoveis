@@ -5,6 +5,8 @@ androidxMaterial = "1.5.0"
 androidxNavigationCompose = "1.0.0"
 androidxUi = "1.0.0"
 converterGson = "2.9.0"
+firebaseBom = "33.6.0"
+firebaseDatabase = "21.0.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -37,6 +39,9 @@ androidx-navigation-compose-v260 = { module = "androidx.navigation:navigation-co
 androidx-ui-v100 = { module = "androidx.compose.ui:ui", version.ref = "androidxUi" }
 androidx-ui-v150 = { module = "androidx.compose.ui:ui", version.ref = "uiVersion" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-database = { module = "com.google.firebase:firebase-database", version.ref = "firebaseDatabase" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

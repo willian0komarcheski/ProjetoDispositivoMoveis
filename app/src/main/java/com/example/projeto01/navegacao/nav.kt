@@ -1,56 +1,58 @@
 package com.example.projeto01.navegacao
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.projeto01.dados.Usuario
+import com.example.projeto01.models.UsuarioManager
 import com.example.projeto01.view.TelaCadastro
+import com.example.projeto01.view.TelaEdicaoUsuario
 import com.example.projeto01.view.TelaListaUsuarios
 
 @Composable
-fun Navegacao() {
+fun Navegacao(usuarioManager: UsuarioManager) {
     val navController = rememberNavController()
-    // Armazena a lista de usuários localmente na memória
-    var usuarios by remember { mutableStateOf(listOf<Usuario>()) }
-
     Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController)
-        }
+        bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "cachorro",
+            startDestination = "cadastro",
             Modifier.padding(innerPadding)
         ) {
-            composable("cachorro") {
-                // Tela de cadastro que adiciona o usuário à lista
-                TelaCadastro(onCadastroConcluido = { novoUsuario ->
-                    usuarios = usuarios + novoUsuario // Atualiza a lista de usuários
-                })
+            composable("cadastro") {
+                TelaCadastro(onCadastroConcluido = { navController.navigate("lista") })
             }
-            composable("conselho") {
-                // Tela de lista que exibe todos os usuários cadastrados
-                TelaListaUsuarios(usuarios)
+            composable("lista") {
+                TelaListaUsuarios(usuarioManager = usuarioManager, navController = navController)
+            }
+            composable("editar/{usuarioId}") { backStackEntry ->
+                val usuarioId = backStackEntry.arguments?.getString("usuarioId")
+                if (usuarioId != null) {
+                    TelaEdicaoUsuario(
+                        usuarioId = usuarioId,
+                        usuarioManager = usuarioManager,
+                        navController = navController
+                    )
+                }
             }
         }
     }
 }
+
+
+
+
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -58,14 +60,14 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavigationItem(
             label = { Text("Cadastro") },
             icon = { Icon(Icons.Default.Info, contentDescription = null) },
-            selected = navController.currentDestination?.route == "cachorro",
-            onClick = { navController.navigate("cachorro") }
+            selected = navController.currentDestination?.route == "cadastro",
+            onClick = { navController.navigate("cadastro") }
         )
         BottomNavigationItem(
             label = { Text("Lista de Usuários") },
             icon = { Icon(Icons.Default.Info, contentDescription = null) },
-            selected = navController.currentDestination?.route == "conselho",
-            onClick = { navController.navigate("conselho") }
+            selected = navController.currentDestination?.route == "lista",
+            onClick = { navController.navigate("lista") }
         )
     }
 }
